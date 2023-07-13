@@ -17,10 +17,10 @@ namespace HackerNews.Application.Mappers
             (
                 postedBy: story.By,
                 time: _dateTimeMapper.MapFromUnixStamp(story.Time),
-                url: new Uri(story.Url),
                 title: story.Title,
                 score: story.Score,
-                commentCount: story.Descendants
+                commentCount: story.Descendants,
+                url: story.Url != null ? new Uri(story.Url) : null
             );
         }
     }
