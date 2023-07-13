@@ -1,17 +1,25 @@
 ﻿using HackerNews.Domain.DTO;
 using HackerNews.Domain.Model;
+using HackerNews.Services.Mappers;
 using System.Text.Json;
 
 namespace HackerNews.Services;
 
 public class HackerNewsService : IHackerNewsService
 {
+    private const int API_BATCH_SIZE = 1;
+
     private readonly HttpClient _httpClient;
     private readonly SemaphoreSlim _semaphore;
-    public HackerNewsService(HttpClient httpClient)
+    private readonly IStoryMapper _storyMapper;
+
+    public HackerNewsService(
+        HttpClient httpClient,
+        IStoryMapper storyMapper)
     {
         _httpClient = httpClient;
-        _semaphore = new SemaphoreSlim(1);
+        _semaphore = new SemaphoreSlim(API_BATCH_SIZE);
+        _storyMapper = storyMapper;
     }
 
     public async Task<IEnumerable<StoryDto>?> GetBestStories(int count)
@@ -26,16 +34,7 @@ public class HackerNewsService : IHackerNewsService
         var tasks = bestStoriesIds.Select(storyId => GetStory(storyId));
         var stories = await Task.WhenAll(tasks);
 
-        var storiesDtos = stories?.Select(s => new StoryDto
-        (
-            postedBy: s.By,
-            time: new DateTime(),
-            url: new Uri(s.Url),
-            title: s.Title,
-            score: s.Score,
-            commentCount: s.Descendants
-        ));
-
+        var storiesDtos = stories?.Select(s => _storyMapper.Map(s));
         return storiesDtos;
     }
 

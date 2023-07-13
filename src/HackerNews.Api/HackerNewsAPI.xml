@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HackerNews.Api</name>
+    </assembly>
+    <members>
+        <member name="M:HackerNews.Api.Controllers.BestStoriesController.Get(System.Int32)">
+            <summary>
+            Returns N best stories
+            </summary>
+            <returns>List of the best stories</returns>
+        </member>
+    </members>
+</doc>
