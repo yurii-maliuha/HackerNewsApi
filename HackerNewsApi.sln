@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.Api.UnitTests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackersNews.Domain", "src\HackersNews.Domain\HackersNews.Domain.csproj", "{68BB57FF-06A8-4CA6-BC77-CA54C9B776C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.Services", "src\HackerNews.Services\HackerNews.Services.csproj", "{BB7EAE62-9218-4C7C-BD31-B866E054BA0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.Application", "src\HackerNews.Services\HackerNews.Application.csproj", "{BB7EAE62-9218-4C7C-BD31-B866E054BA0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

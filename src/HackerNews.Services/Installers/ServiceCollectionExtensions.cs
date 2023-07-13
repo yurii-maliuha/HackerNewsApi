@@ -1,12 +1,12 @@
-﻿using HackerNews.Services.Mappers;
+﻿using HackerNews.Application.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HackerNews.Services.Installers;
+namespace HackerNews.Application.Installers;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddTransient<IStoryMapper, StoryMapper>();
         services.AddTransient<IDateTimeMapper, DateTimeMapper>();

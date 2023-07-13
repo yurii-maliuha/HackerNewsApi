@@ -1,7 +1,7 @@
 ﻿using HackerNews.Domain.DTO;
 using HackerNews.Domain.Model;
 
-namespace HackerNews.Services.Mappers
+namespace HackerNews.Application.Mappers
 {
     public interface IStoryMapper
     {

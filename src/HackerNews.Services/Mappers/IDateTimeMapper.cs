@@ -1,4 +1,4 @@
-﻿namespace HackerNews.Services.Mappers
+﻿namespace HackerNews.Application.Mappers
 {
     public interface IDateTimeMapper
     {

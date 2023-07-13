@@ -1,13 +1,13 @@
-﻿using HackerNews.Domain.DTO;
+﻿using HackerNews.Application.Mappers;
+using HackerNews.Domain.DTO;
 using HackerNews.Domain.Model;
-using HackerNews.Services.Mappers;
 using System.Text.Json;
 
-namespace HackerNews.Services;
+namespace HackerNews.Application.Services;
 
 public class HackerNewsService : IHackerNewsService
 {
-    private const int API_BATCH_SIZE = 1;
+    private const int API_BATCH_SIZE = 3;
 
     private readonly HttpClient _httpClient;
     private readonly SemaphoreSlim _semaphore;
@@ -40,9 +40,11 @@ public class HackerNewsService : IHackerNewsService
 
     public async Task<Story?> GetStory(int storyId)
     {
+        Console.WriteLine($"{storyId} story is added in queue");
         await _semaphore.WaitAsync();
         try
         {
+            Console.WriteLine($"{storyId} story entered");
             var url = $"/v0/item/{storyId}.json";
             var response = await _httpClient.GetStringAsync(url);
             if (response != null)
@@ -57,6 +59,7 @@ public class HackerNewsService : IHackerNewsService
         }
         finally
         {
+            Console.WriteLine($"{storyId} story exited");
             _semaphore.Release();
         }
     }

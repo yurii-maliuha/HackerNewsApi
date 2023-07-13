@@ -1,6 +1,6 @@
 ﻿using HackerNews.Domain.DTO;
 
-namespace HackerNews.Services;
+namespace HackerNews.Application.Services;
 
 public interface IHackerNewsService
 {
