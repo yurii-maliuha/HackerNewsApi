@@ -1,8 +1,8 @@
 ﻿using HackerNews.Domain.DTO;
 
-namespace HackerNews.Application.Services;
+namespace HackerNews.Application;
 
-public interface IHackerNewsService
+public interface IHackerNewsManager
 {
     Task<IEnumerable<StoryDto>?> GetBestStories(int count);
 }

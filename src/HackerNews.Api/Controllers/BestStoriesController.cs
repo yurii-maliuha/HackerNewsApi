@@ -1,4 +1,4 @@
-using HackerNews.Application.Services;
+using HackerNews.Application;
 using HackerNews.Domain.DTO;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +8,10 @@ namespace HackerNews.Api.Controllers
     [Route("api/best-stories")]
     public class BestStoriesController : ControllerBase
     {
-        private readonly IHackerNewsService _hackerNewsService;
+        private readonly IHackerNewsManager _hackerNewsService;
 
         public BestStoriesController(
-            IHackerNewsService hackerNewsService)
+            IHackerNewsManager hackerNewsService)
         {
             _hackerNewsService = hackerNewsService;
         }

@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddMemoryCache(options =>
         {
-            options.SizeLimit = 50;
+            options.SizeLimit = CachConstants.CACHE_LIMIT;
         });
 
         services.Configure<HackerNewsConfiguration>(options =>
@@ -23,7 +23,7 @@ public static class ServiceCollectionExtensions
         services.AddHttpClient<IStoryService, StoryService>();
         services.AddTransient<IStoryMapper, StoryMapper>();
         services.AddTransient<IDateTimeMapper, DateTimeMapper>();
-        services.AddTransient<IHackerNewsService, HackerNewsService>();
+        services.AddTransient<IHackerNewsManager, HackerNewsManager>();
 
         return services;
     }

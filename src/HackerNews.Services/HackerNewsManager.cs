@@ -1,19 +1,20 @@
 ﻿using HackerNews.Application.Helpers;
 using HackerNews.Application.Mappers;
+using HackerNews.Application.Services;
 using HackerNews.Domain.DTO;
 
-namespace HackerNews.Application.Services;
+namespace HackerNews.Application;
 
-public class HackerNewsService : IHackerNewsService
+public class HackerNewsManager : IHackerNewsManager
 {
-    private const int API_BATCH_SIZE = 4;
+    private const int API_BATCH_SIZE = 10;
 
     private readonly SemaphoreSlim _semaphore;
     private readonly IStoryService _storyService;
     private readonly IStoryMapper _storyMapper;
     private readonly IStoryCacheReader _cacheReader;
 
-    public HackerNewsService(
+    public HackerNewsManager(
         IStoryService storyService,
         IStoryMapper storyMapper,
         IStoryCacheReader cacheReader)
@@ -38,12 +39,10 @@ public class HackerNewsService : IHackerNewsService
             await _semaphore.WaitAsync();
             try
             {
-                if (index < 90)
-                {
-                    return await _cacheReader.GetStory(storyId, () => _storyService.GetStory(storyId));
-                }
-
-                return await _storyService.GetStory(storyId);
+                var retrieverTask = index < CachConstants.CACHE_LIMIT
+                    ? _cacheReader.GetStory(storyId, () => _storyService.GetStory(storyId))
+                    : _storyService.GetStory(storyId);
+                return await retrieverTask;
             }
             finally
             {
