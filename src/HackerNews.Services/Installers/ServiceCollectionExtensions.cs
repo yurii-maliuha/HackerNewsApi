@@ -10,7 +10,10 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddMemoryCache();
+        services.AddMemoryCache(options =>
+        {
+            options.SizeLimit = 90;
+        });
         services.AddHttpClient<IStoryService, StoryService>(client =>
         {
             client.BaseAddress = new Uri(configuration["HNBaseUrl"]);
@@ -18,7 +21,7 @@ public static class ServiceCollectionExtensions
 
         services.AddTransient<IStoryMapper, StoryMapper>();
         services.AddTransient<IDateTimeMapper, DateTimeMapper>();
-        services.AddTransient<ICacheReader, CacheReader>();
+        services.AddSingleton<IStoryCacheReader, StoryCacheReader>();
         services.AddTransient<IHackerNewsService, HackerNewsService>();
 
         return services;

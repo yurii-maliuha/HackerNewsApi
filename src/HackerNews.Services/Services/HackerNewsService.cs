@@ -1,7 +1,6 @@
 ﻿using HackerNews.Application.Helpers;
 using HackerNews.Application.Mappers;
 using HackerNews.Domain.DTO;
-using HackerNews.Domain.Model;
 
 namespace HackerNews.Application.Services;
 
@@ -12,12 +11,12 @@ public class HackerNewsService : IHackerNewsService
     private readonly SemaphoreSlim _semaphore;
     private readonly IStoryService _storyService;
     private readonly IStoryMapper _storyMapper;
-    private readonly ICacheReader _cacheReader;
+    private readonly IStoryCacheReader _cacheReader;
 
     public HackerNewsService(
         IStoryService storyService,
         IStoryMapper storyMapper,
-        ICacheReader cacheReader)
+        IStoryCacheReader cacheReader)
     {
         _storyService = storyService;
         _storyMapper = storyMapper;
@@ -30,18 +29,20 @@ public class HackerNewsService : IHackerNewsService
     {
         var bestStoriesIds = await _storyService.GetBestStoriesIds(count);
 
-        var tasks = bestStoriesIds.Select(async storyId =>
+        var tasks = bestStoriesIds.Select(async (storyId, index) =>
         {
-            Console.WriteLine($"{storyId} story is queued");
             await _semaphore.WaitAsync();
             try
             {
-                Console.WriteLine($"{storyId} story entered");
-                return await _cacheReader.GetValue<int, Story>(storyId, () => _storyService.GetStory(storyId));
+                if (index < 90)
+                {
+                    return await _cacheReader.GetValue(storyId, () => _storyService.GetStory(storyId));
+                }
+
+                return await _storyService.GetStory(storyId);
             }
             finally
             {
-                Console.WriteLine($"{storyId} story exited");
                 _semaphore.Release();
             }
         });

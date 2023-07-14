@@ -8,12 +8,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F7959744-5DE6-40DC-BBA3-7576005272BD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D34E4E22-CCC3-4838-B122-CF9A1C8C0545}"
+	ProjectSection(SolutionItems) = preProject
+		tests\load-test.js = tests\load-test.js
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.Api.UnitTests", "tests\HackerNewsApi.UnitTests\HackerNews.Api.UnitTests.csproj", "{B0A93231-AAA0-4F4D-B025-7E9C5CE78685}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackersNews.Domain", "src\HackersNews.Domain\HackersNews.Domain.csproj", "{68BB57FF-06A8-4CA6-BC77-CA54C9B776C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackersNews.Domain", "src\HackersNews.Domain\HackersNews.Domain.csproj", "{68BB57FF-06A8-4CA6-BC77-CA54C9B776C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.Application", "src\HackerNews.Services\HackerNews.Application.csproj", "{BB7EAE62-9218-4C7C-BD31-B866E054BA0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.Application", "src\HackerNews.Services\HackerNews.Application.csproj", "{BB7EAE62-9218-4C7C-BD31-B866E054BA0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

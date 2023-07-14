@@ -1,4 +1,5 @@
 ﻿using HackerNews.Domain.Model;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace HackerNews.Application.Services;
@@ -15,28 +16,34 @@ public class StoryService : IStoryService
     public async Task<IEnumerable<int>> GetBestStoriesIds(int count)
     {
         var url = $"/v0/beststories.json?print=pretty&orderBy=%22$key%22&limitToFirst={count}";
-        var bestStoriesIdsResponse = await _httpClient.GetStringAsync(url);
-        var bestStoriesIds = bestStoriesIdsResponse != null
-            ? JsonSerializer.Deserialize<IEnumerable<int>>(bestStoriesIdsResponse)
-            : new List<int>();
+        using (var response = await _httpClient.GetAsync(url))
+        {
+            response.EnsureSuccessStatusCode();
 
-        return bestStoriesIds;
+            var bestStoriesIds = await response.Content.ReadFromJsonAsync<IEnumerable<int>>(new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+
+            return bestStoriesIds ?? new List<int>();
+        }
     }
 
     public async Task<Story?> GetStory(int storyId)
     {
-        Console.WriteLine($"{storyId}: Fetching from API");
-
         var url = $"/v0/item/{storyId}.json";
-        var response = await _httpClient.GetStringAsync(url);
-        if (response != null)
+        using (var response = await _httpClient.GetAsync(url))
         {
-            return JsonSerializer.Deserialize<Story>(response, new JsonSerializerOptions()
+            response.EnsureSuccessStatusCode();
+
+            var stream = await response.Content.ReadAsStreamAsync();
+
+            var story = await response.Content.ReadFromJsonAsync<Story>(new JsonSerializerOptions()
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             });
-        }
 
-        return null;
+            return story;
+        }
     }
 }
