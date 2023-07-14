@@ -8,14 +8,11 @@ namespace HackerNews.Api.Controllers
     [Route("api/best-stories")]
     public class BestStoriesController : ControllerBase
     {
-        private readonly ILogger<BestStoriesController> _logger;
         private readonly IHackerNewsService _hackerNewsService;
 
         public BestStoriesController(
-            ILogger<BestStoriesController> logger,
             IHackerNewsService hackerNewsService)
         {
-            _logger = logger;
             _hackerNewsService = hackerNewsService;
         }
 

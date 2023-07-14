@@ -4,5 +4,6 @@ namespace HackerNews.Application.Helpers;
 
 public interface IStoryCacheReader
 {
-    ValueTask<Story?> GetValue(int key, Func<Task<Story?>> valueRetriever);
+    Task<IEnumerable<int>?> GetBestStoriesIds(Func<Task<IEnumerable<int>?>> valueRetriever);
+    Task<Story?> GetStory(int storyId, Func<Task<Story?>> valueRetriever);
 }

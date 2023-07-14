@@ -1,4 +1,6 @@
-﻿using HackerNews.Domain.Model;
+﻿using HackerNews.Application.Models;
+using HackerNews.Domain.Model;
+using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -7,25 +9,25 @@ namespace HackerNews.Application.Services;
 public class StoryService : IStoryService
 {
     private readonly HttpClient _httpClient;
+    private static readonly JsonSerializerOptions _defaultSerializerOptions =
+        new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
-    public StoryService(HttpClient httpClient)
+    public StoryService(HttpClient httpClient, IOptions<HackerNewsConfiguration> options)
     {
         _httpClient = httpClient;
+        _httpClient.BaseAddress = options.Value.UrlBase;
     }
 
-    public async Task<IEnumerable<int>> GetBestStoriesIds(int count)
+    public async Task<IEnumerable<int>?> GetBestStoriesIds()
     {
-        var url = $"/v0/beststories.json?print=pretty&orderBy=%22$key%22&limitToFirst={count}";
+        var url = $"/v0/beststories.json";
         using (var response = await _httpClient.GetAsync(url))
         {
             response.EnsureSuccessStatusCode();
 
-            var bestStoriesIds = await response.Content.ReadFromJsonAsync<IEnumerable<int>>(new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
+            var bestStoriesIds = await response.Content.ReadFromJsonAsync<IEnumerable<int>>(_defaultSerializerOptions);
 
-            return bestStoriesIds ?? new List<int>();
+            return bestStoriesIds;
         }
     }
 
@@ -38,10 +40,7 @@ public class StoryService : IStoryService
 
             var stream = await response.Content.ReadAsStreamAsync();
 
-            var story = await response.Content.ReadFromJsonAsync<Story>(new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
+            var story = await response.Content.ReadFromJsonAsync<Story>(_defaultSerializerOptions);
 
             return story;
         }

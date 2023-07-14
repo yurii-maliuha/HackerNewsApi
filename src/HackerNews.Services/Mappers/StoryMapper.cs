@@ -20,7 +20,7 @@ namespace HackerNews.Application.Mappers
                 title: story.Title,
                 score: story.Score,
                 commentCount: story.Descendants,
-                url: story.Url != null ? new Uri(story.Url) : null
+                url: story.Url
             );
         }
     }

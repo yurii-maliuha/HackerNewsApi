@@ -6,7 +6,7 @@ namespace HackerNews.Application.Services;
 
 public class HackerNewsService : IHackerNewsService
 {
-    private const int API_BATCH_SIZE = 10;
+    private const int API_BATCH_SIZE = 4;
 
     private readonly SemaphoreSlim _semaphore;
     private readonly IStoryService _storyService;
@@ -27,16 +27,20 @@ public class HackerNewsService : IHackerNewsService
 
     public async Task<IEnumerable<StoryDto>?> GetBestStories(int count)
     {
-        var bestStoriesIds = await _storyService.GetBestStoriesIds(count);
+        var bestStoriesIds = await _cacheReader.GetBestStoriesIds(() => _storyService.GetBestStoriesIds());
+        if (bestStoriesIds == null)
+        {
+            return new List<StoryDto>();
+        }
 
-        var tasks = bestStoriesIds.Select(async (storyId, index) =>
+        var tasks = bestStoriesIds.Take(count).Select(async (storyId, index) =>
         {
             await _semaphore.WaitAsync();
             try
             {
                 if (index < 90)
                 {
-                    return await _cacheReader.GetValue(storyId, () => _storyService.GetStory(storyId));
+                    return await _cacheReader.GetStory(storyId, () => _storyService.GetStory(storyId));
                 }
 
                 return await _storyService.GetStory(storyId);
