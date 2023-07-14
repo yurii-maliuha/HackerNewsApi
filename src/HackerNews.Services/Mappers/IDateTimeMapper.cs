@@ -1,7 +1,6 @@
-﻿namespace HackerNews.Application.Mappers
+﻿namespace HackerNews.Application.Mappers;
+
+public interface IDateTimeMapper
 {
-    public interface IDateTimeMapper
-    {
-        public DateTime MapFromUnixStamp(long unixTimeStamp);
-    }
+    DateTime MapFromUnixStamp(long unixTimeStamp);
 }

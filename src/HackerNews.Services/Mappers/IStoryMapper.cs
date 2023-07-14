@@ -1,10 +1,9 @@
 ﻿using HackerNews.Domain.DTO;
 using HackerNews.Domain.Model;
 
-namespace HackerNews.Application.Mappers
+namespace HackerNews.Application.Mappers;
+
+public interface IStoryMapper
 {
-    public interface IStoryMapper
-    {
-        StoryDto Map(Story model);
-    }
+    StoryDto Map(Story model);
 }

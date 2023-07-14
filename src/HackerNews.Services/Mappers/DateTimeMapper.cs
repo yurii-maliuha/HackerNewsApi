@@ -1,12 +1,10 @@
-﻿namespace HackerNews.Application.Mappers
+﻿namespace HackerNews.Application.Mappers;
+
+public class DateTimeMapper : IDateTimeMapper
 {
-    public class DateTimeMapper : IDateTimeMapper
+    public DateTime MapFromUnixStamp(long unixTimeStamp)
     {
-        public DateTime MapFromUnixStamp(long unixTimeStamp)
-        {
-            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dateTime = dateTime.AddSeconds(unixTimeStamp).ToUniversalTime();
-            return dateTime;
-        }
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        return dateTime.AddSeconds(unixTimeStamp).ToUniversalTime();
     }
 }

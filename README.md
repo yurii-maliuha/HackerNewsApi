@@ -23,3 +23,4 @@ You can find the results of load testing here - https://github.com/yurii-maliuha
 ## Possible Enhancements
 * Consider using TLP Dataflow
 * Replace in-memory cache with distributed cache like Redis
+* Fix possible race condition on value setting to cache (_CacheBase.GetValue_)
